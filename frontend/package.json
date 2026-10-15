@@ -1,0 +1,20 @@
+{
+  "name": "intellidoom-frontend",
+  "private": true,
+  "version": "2.1.0",
+  "type": "module",
+  "description": "React + Vite frontend for IntelliDoom - curated rabbit holes for curious minds.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.0"
+  }
+}

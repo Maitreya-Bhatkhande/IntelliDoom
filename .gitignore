@@ -1,0 +1,11 @@
+# Node / frontend
+node_modules/
+dist/
+*.log
+
+# The backend cache is regenerated automatically, so we don't commit it.
+backend/.cache/
+
+# Local environment
+.env
+.DS_Store

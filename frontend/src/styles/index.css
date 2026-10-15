@@ -1,0 +1,397 @@
+/* index.css
+   --------------------------------------------------------------------------
+   All of the styling lives in this one file, so there is nothing to hunt down.
+
+   The look: near-black, quiet and typographic. One card fills the screen and
+   the feed snap-scrolls between them. The accent colour is used sparingly -
+   a small dash on the brand, the active tab and the "Open" hint.
+
+   Everything is deliberately plain: no shadows to speak of, no colour pills,
+   no boxes inside boxes. Content first.
+   -------------------------------------------------------------------------- */
+
+:root {
+  --bg: #0a0a0d;
+  --line: #1d1d23;
+  --ink: #f1f1f4;
+  --muted: #85858f;
+  --dim: #b6b6c0;
+  --accent: #8b7cff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* A very faint wash of light at the top, so the black is not flat. */
+  background: radial-gradient(1100px 520px at 50% -12%, #13131c 0%, transparent 62%);
+}
+
+/* ------------------------------- top bar -------------------------------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 22px 14px;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.brand-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  align-self: center;
+  background: var(--accent);
+}
+
+.brand-tag {
+  display: none;
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 720px) {
+  .brand-tag {
+    display: inline;
+  }
+}
+
+.refresh {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.refresh:hover:not(:disabled) {
+  color: var(--ink);
+  border-color: #33333e;
+}
+
+.refresh:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* ------------------------------ topic bar ------------------------------- */
+.topicbar {
+  display: flex;
+  gap: 26px;
+  padding: 0 22px 14px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--line);
+  scrollbar-width: none;
+}
+
+.topicbar::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  position: relative;
+  flex: none;
+  background: none;
+  border: 0;
+  padding: 2px 0 9px;
+  color: var(--muted);
+  font-size: 14px;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.tab:hover {
+  color: var(--dim);
+}
+
+.tab.active {
+  color: var(--ink);
+}
+
+.tab.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+/* -------------------------------- feed ---------------------------------- */
+.feed {
+  flex: 1;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.feed::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  position: relative;
+  height: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  cursor: pointer;
+  background: #0b0b0f;
+}
+
+/* The picture area above the text. The image is shown WHOLE - never stretched
+   or cropped - with a big blurry copy of itself glowing behind it. */
+.card-media {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.card-glow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.25);
+  filter: blur(46px) saturate(1.3) brightness(0.4);
+}
+
+.card-image {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  max-width: 88%;
+  max-height: 88%;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+/* Fade the picture area gently into the black where the words live. */
+.card-media::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 24%;
+  background: linear-gradient(to top, #0b0b0f, transparent);
+}
+
+/* The single character drawn faintly when a card has no image. */
+.card-glyph {
+  position: absolute;
+  top: 50%;
+  right: 4vw;
+  transform: translateY(-50%);
+  font-size: min(38vh, 320px);
+  line-height: 1;
+  color: #ffffff;
+  opacity: 0.045;
+  pointer-events: none;
+  user-select: none;
+}
+
+.card-body {
+  position: relative;
+  max-width: 720px;
+  padding: 18px 22px 46px;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 16px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+}
+
+.card-meta::before {
+  content: "";
+  width: 20px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.85;
+}
+
+.card-topic {
+  color: var(--accent);
+}
+
+.card-sep {
+  opacity: 0.45;
+}
+
+.card-title {
+  margin: 0;
+  font-size: clamp(23px, 3.5vw, 41px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.card-desc {
+  margin: 16px 0 0;
+  max-width: 60ch;
+  color: var(--dim);
+  font-size: 15px;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 28px 0 0;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.card-open {
+  color: var(--accent);
+  opacity: 0.7;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.card:hover .card-open {
+  opacity: 1;
+}
+
+/* --------------------------- messages ----------------------------------- */
+.feed-message {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  color: var(--muted);
+  text-align: center;
+  padding: 24px;
+  font-size: 14px;
+}
+
+.feed-message.small {
+  flex: none;
+  min-height: 90px;
+}
+
+.retry {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 9px 16px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.retry:hover {
+  border-color: #33333e;
+}
+
+/* --------------------------- small screens ------------------------------ */
+@media (max-width: 560px) {
+  .topbar {
+    padding: 15px 16px 12px;
+  }
+
+  .topicbar {
+    gap: 20px;
+    padding: 0 16px 12px;
+  }
+
+  .card-body {
+    padding: 14px 16px 34px;
+  }
+
+  .card-desc {
+    -webkit-line-clamp: 2;
+  }
+}
+
+/* A YouTube player, shown while a video card is the one on screen. */
+.card-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: min(88%, 49vw);
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #000;
+}
+
+.card-video iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}

@@ -1,0 +1,13 @@
+{
+  "name": "intellidoom",
+  "private": true,
+  "version": "2.1.0",
+  "type": "module",
+  "description": "Curated rabbit holes for curious minds: a React + Vite frontend with a Kotlin (JDK built-in HTTP server) backend.",
+  "scripts": {
+    "build": "cd backend && build.bat",
+    "dev": "node dev.js",
+    "dev:backend": "cd backend && run.bat",
+    "dev:frontend": "npm run dev --prefix frontend"
+  }
+}
