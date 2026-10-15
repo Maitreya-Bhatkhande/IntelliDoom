@@ -1,0 +1,12 @@
+# Make sure Windows batch files always check out with CRLF line endings,
+# otherwise cmd.exe can mis-read multi-line commands on some machines.
+*.bat text eol=crlf
+
+# Bundled toolchain binaries - never try to normalise these.
+*.jar   binary
+*.exe   binary
+*.dll   binary
+*.lib   binary
+*.klib  binary
+*.pdb   binary
+*.zip   binary
